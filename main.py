@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from flask import Flask, request
 load_dotenv()
 import os
 import telebot
@@ -6,10 +7,17 @@ import openai
 OPENAI_KEY = os.getenv("OPENAI_KEY")
 openai.api_key = OPENAI_KEY
 
+app = Flask(__name__)
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # bot instance
 bot = telebot.TeleBot(BOT_TOKEN)
+
+def webhook():
+    update = telebot.types.Update.de_json(request.stream.read().decode('utf-8'))
+    bot.process_new_updates([update])
+    return 'OK', 200
 
 
 @bot.message_handler(commands=['start'])
@@ -30,5 +38,5 @@ def echo_all(message):
     )
     bot.reply_to(message, completion.choices[0].message["content"].strip())
 
-
-bot.infinity_polling()
+if __name__ == '__main__':
+    app.run()
