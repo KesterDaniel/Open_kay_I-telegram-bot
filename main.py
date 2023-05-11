@@ -7,13 +7,7 @@ import openai
 OPENAI_KEY = os.environ["OPENAI_KEY"]
 openai.api_key = OPENAI_KEY
 
-<<<<<<< HEAD
-app = Flask(__name__)
-
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-=======
 BOT_TOKEN = os.environ["BOT_TOKEN"]
->>>>>>> origin/main
 
 # bot instance
 bot = telebot.TeleBot(BOT_TOKEN)
